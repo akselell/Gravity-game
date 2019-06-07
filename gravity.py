@@ -257,7 +257,7 @@ while not crashed:
 
         with concurrent.futures.ProcessPoolExecutor() as executor:
             #for d in listen:
-            for d, d in zip(listen, executor.map(c.calculate_v, d)):
+            for (c, d), (c, d) in zip(listen, executor.map(c.calculate_v, d)):
                 c, d = c, d
 
         vel = c.vel()
