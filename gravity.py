@@ -235,7 +235,8 @@ while not crashed:
             circle.remove(c)
         listen.remove(c)
 
-#        for d in listen:
+        for d in listen:
+            pass
         with concurrent.futures.ProcessPoolExecutor() as executor:
             for d, (c.velocity_x, c.velocity_y, d.velocity_x, d.velocity_y, dist) in zip(listen, executor.map(c.calculate_v(d), c)):
                 c.velocity_x, c.velocity_y, d.velocity_x, d.velocity_y, dist = c.calculate_v(d)
