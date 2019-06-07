@@ -30,6 +30,8 @@ class Circle:
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
         self.RGB = RGB
+        self.x_drawn = 0
+        self.y_drawn = 0
 
     def distance(self, other):
         return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
@@ -71,30 +73,7 @@ class Circle:
         self.velocity_y -= acceleration_c * diff_y / dist * 0.003
         other.velocity_x += acceleration_d * diff_x / dist * 0.003
         other.velocity_y += acceleration_d * diff_y / dist * 0.003
-
-        if dist < self.get_radius() + other.get_radius():
-            new_mass = self.mass + other.mass
-            self.x = (self.mass * self.x + other.mass * other.x) / (self.mass + other.mass)
-            self.y = (self.mass * self.y + other.mass * other.y) / (self.mass + other.mass)
-            self.velocity_x = (self.velocity_x * self.mass + other.velocity_x * other.mass) / (
-                self.mass + other.mass
-            )
-            self.velocity_y = (self.velocity_y * self.mass + other.velocity_y * other.mass) / (
-                self.mass + other.mass
-            )
-            self.RGB = color_picker(self, d)
-            self.mass = new_mass
-            circle.remove(d)
-            listen.remove(d)
-            if new_mass > critical_mass:
-                if c in circle:
-                    f = open("demofile2.txt", "a")
-                    f.write("{}\n".format(self.RGB))
-                    f.close()
-                    circle.remove(self)
-                assert self not in listen
-                max_vel = 0
-
+        return (self.velocity_x, self.velocity_y, other.velocity_x, other.velocity_y)
 
 
 def get_color():
@@ -213,7 +192,9 @@ while not crashed:
 
         if event.type == pygame.MOUSEBUTTONUP:
             size = time.time() - times
-            circle.append(Circle(pos_x, pos_y, max(size * 15 ** 10, 10e2), RGB=get_color()))
+            circle.append(
+                Circle(pos_x, pos_y, max(size * 15 ** 10, 10e2), RGB=get_color())
+            )
             print(size)
 
     keys = pygame.key.get_pressed()
@@ -254,11 +235,35 @@ while not crashed:
             circle.remove(c)
         listen.remove(c)
 
+        for d in listen:
+            #with concurrent.futures.ProcessPoolExecutor() as executor:
+            #    for d, d in zip(listen, executor.map(c.calculate_v(d), d)):
+            #        c.velocity_x, c.velocity_y, d.velocity_x, d.velocity_y = c.calculate_v(d)
 
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            #for d in listen:
-            for d, d in zip(listen, executor.map(c.calculate_v, d)):
-                c, d = c, d
+            c.calculate_v(d)
+
+            if dist < c.get_radius() + d.get_radius():
+                new_mass = c.mass + d.mass
+                c.x = (c.mass * c.x + d.mass * d.x) / (c.mass + d.mass)
+                c.y = (c.mass * c.y + d.mass * d.y) / (c.mass + d.mass)
+                c.velocity_x = (c.velocity_x * c.mass + d.velocity_x * d.mass) / (
+                    c.mass + d.mass
+                )
+                c.velocity_y = (c.velocity_y * c.mass + d.velocity_y * d.mass) / (
+                    c.mass + d.mass
+                )
+                c.RGB = color_picker(c, d)
+                c.mass = new_mass
+                circle.remove(d)
+                listen.remove(d)
+                if new_mass > critical_mass:
+                    if c in circle:
+                        f = open("demofile2.txt", "a")
+                        f.write("{}\n".format(c.RGB))
+                        f.close()
+                        circle.remove(c)
+                    assert c not in listen
+                max_vel = 0
 
         vel = c.vel()
 
