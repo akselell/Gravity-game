@@ -78,21 +78,25 @@ circle2 = [
     Circle(205, 100, 40e10, 0, RGB=get_color()),
 ]
 
-divider = 50
+#divider = 50
+divider = 35
 fun_mass = (critical_mass) / ((window_width / divider) * (window_hight / divider))
+
+def new_balls():
+    for x in range(window_width // divider):
+        for y in range(window_hight // divider):
+            circle.append(
+                Circle(
+                    (x * divider) + (divider / 2),
+                    (y * divider) + (divider / 2),
+                    fun_mass,
+                    RGB=get_color(),
+                )
+            )
 
 try:
     if sys.argv[1] == "s":
-        for x in range(window_width // divider):
-            for y in range(window_hight // divider):
-                circle.append(
-                    Circle(
-                        (x * divider) + divider / 2,
-                        (y * divider) + divider / 2,
-                        fun_mass,
-                        RGB=get_color(),
-                    )
-                )
+        new_balls()
 except:
     pass
 
@@ -165,16 +169,7 @@ while not crashed:
             times = time.time()
 
         if keys[pygame.K_s]:
-            for x in range(window_width // divider):
-                for y in range(window_hight // divider):
-                    circle.append(
-                        Circle(
-                            (x * divider) + divider / 2,
-                            (y * divider) + divider / 2,
-                            fun_mass,
-                            RGB=get_color(),
-                        )
-                    )
+            new_balls()
 
         if event.type == pygame.MOUSEBUTTONUP:
             size = time.time() - times
