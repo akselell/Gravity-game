@@ -73,7 +73,7 @@ class Circle:
         self.velocity_y -= acceleration_c * diff_y / dist * 0.003
         other.velocity_x += acceleration_d * diff_x / dist * 0.003
         other.velocity_y += acceleration_d * diff_y / dist * 0.003
-        return (self.velocity_x, self.velocity_y, other.velocity_x, other.velocity_y, dist)
+        return dist
 
 
 def get_color():
@@ -236,12 +236,11 @@ while not crashed:
         listen.remove(c)
 
         for d in listen:
-            pass
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            for d, (c.velocity_x, c.velocity_y, d.velocity_x, d.velocity_y, dist) in zip(listen, executor.map(c.calculate_v(d), c)):
-                c.velocity_x, c.velocity_y, d.velocity_x, d.velocity_y, dist = c.calculate_v(d)
-
-#            c.velocity_x, c.velocity_y, d.velocity_x, d.velocity_y, dist = c.calculate_v(d)
+            with concurrent.futures.ProcessPoolExecutor() as executor:
+            #for d, dist in zip(listen, executor.map(c.calculate_v(d), c)):
+            #    pass
+                dist = executor.map(c.calculate_v(d), listen)         
+            dist = c.distance(d)
 
             if dist < c.get_radius() + d.get_radius():
                 new_mass = c.mass + d.mass
