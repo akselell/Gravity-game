@@ -29,9 +29,8 @@ class Circle:
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
         self.RGB = RGB
-        self.x_drawn = 0
-        self.y_drawn = 0
-
+    
+    
     def distance(self, other):
         return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
 
