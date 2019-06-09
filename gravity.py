@@ -13,8 +13,6 @@ window_hight = 600
 
 G = 6.674e-7
 critical_mass = 12e12
-# critical_mass = 12000000000000
-# G = 12.674 * 10**-11
 
 
 class Circle:
@@ -78,8 +76,7 @@ circle2 = [
     Circle(205, 100, 40e10, 0, RGB=get_color()),
 ]
 
-#divider = 50
-divider = 35
+divider = 50
 fun_mass = (critical_mass) / ((window_width / divider) * (window_hight / divider))
 
 def new_balls():
@@ -108,6 +105,21 @@ def color_picker(a, b):
     abb = tuple([round(x / (a.mass + b.mass)) for x in ab])
     return abb
 
+def ball_in_circle(biggest):
+    this_mass = 10e10
+    dist = 200
+    force = G * ((biggest.mass * this_mass) / dist**2)
+    speed = (math.sqrt((force * dist) / biggest.mass))
+    biggest.velocity_x -= speed / biggest.mass
+    circle.append(
+                Circle(
+                    biggest.x,
+                    biggest.y - dist,
+                    10e10,
+                    velocity_x=speed / 24,
+                    RGB=get_color(),
+                )
+            )  
 
 pygame.init()
 gamedisplay = pygame.display.set_mode((window_width, window_hight))
@@ -159,7 +171,7 @@ while not crashed:
             print("New!")
             for x in circle:
                 print(x)
-        
+
         if keys[pygame.K_j]:
             circle = []
 
@@ -167,6 +179,16 @@ while not crashed:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             times = time.time()
+
+        if keys[pygame.K_r]:
+            max_mass2 = 0
+            for c in circle:
+                if c.mass > max_mass2:
+                    max_mass2 = c.mass
+            for c in circle:
+                if c.mass == max_mass2:
+                    ball_in_circle(c)
+                   
 
         if keys[pygame.K_s]:
             new_balls()
@@ -226,7 +248,6 @@ while not crashed:
             c.velocity_y -= acceleration_c * diff_y / dist * 0.003
             d.velocity_x += acceleration_d * diff_x / dist * 0.003
             d.velocity_y += acceleration_d * diff_y / dist * 0.003
-            
 
             if dist < c.get_radius() + d.get_radius():
                 new_mass = c.mass + d.mass
