@@ -27,6 +27,7 @@ class Circle:
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
         self.RGB = RGB
+        self.deletable = True
     
     
     def distance(self, other):
