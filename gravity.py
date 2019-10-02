@@ -1,11 +1,10 @@
+import time
+import sys
 import math
 import random
 import pygame
 import operator
 from pygame import gfxdraw
-import datetime
-import time
-import sys
 
 window_width = 800
 window_hight = 600
@@ -107,20 +106,22 @@ def color_picker(a, b):
     return abb
 
 def ball_in_circle(biggest):
+    #print(biggest.x)
     this_mass = 10e10
-    dist = 200
-    force = G * ((biggest.mass * this_mass) / dist**2)
-    speed = (math.sqrt((force * dist) / biggest.mass))
+    distance = 100
+    force2 = G * ((biggest.mass * this_mass) / distance**2)
+    speed = (math.sqrt((force2 * distance) / (biggest.mass + this_mass)))
     biggest.velocity_x -= speed / biggest.mass
+    fartlist = [speed, -speed]
     circle.append(
                 Circle(
                     biggest.x,
-                    biggest.y - dist,
+                    biggest.y - distance,
                     10e10,
-                    velocity_x=speed / 24,
+                    velocity_x= random.choice(fartlist) * 0.03,
                     RGB=get_color(),
                 )
-            )  
+            )
 
 pygame.init()
 gamedisplay = pygame.display.set_mode((window_width, window_hight))
