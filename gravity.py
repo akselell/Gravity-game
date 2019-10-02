@@ -110,7 +110,7 @@ def ball_in_circle(biggest):
     this_mass = 10e10
     distance = 100
     force2 = G * ((biggest.mass * this_mass) / distance**2)
-    speed = (math.sqrt((force2 * distance) / (biggest.mass + this_mass)))
+    speed = (math.sqrt((force2 * distance) / (biggest.mass + this_mass))) * 0.03
     biggest.velocity_x -= speed / biggest.mass
     fartlist = [speed, -speed]
     circle.append(
@@ -118,7 +118,7 @@ def ball_in_circle(biggest):
                     biggest.x,
                     biggest.y - distance,
                     10e10,
-                    velocity_x= random.choice(fartlist) * 0.03,
+                    velocity_x= random.choice(fartlist),
                     RGB=get_color(),
                 )
             )
