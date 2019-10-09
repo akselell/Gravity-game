@@ -45,7 +45,7 @@ class Circle:
         return "Circle(x = {}, y = {}, mass = {}e10, vel = {}, color = {})".format(
             round(self.x, 2),
             round(self.y, 2),
-            int(self.mass) / 10e10,
+            round(int(self.mass) / 10e10),
             round(self.vel(), 2),
             self.RGB,
         )
