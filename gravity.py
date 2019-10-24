@@ -7,7 +7,7 @@ import operator
 from pygame import gfxdraw
 
 window_width = 800
-window_hight = 600
+window_height = 600
 
 
 G = 6.674e-7
@@ -71,17 +71,17 @@ def get_color():
 circle = []
 circle2 = [
     Circle(x=200, y=500, mass=10e10, velocity_x=0, velocity_y=0, RGB=get_color()),
-    Circle(window_width / 2 + 1, window_hight / 2 + 1, 20e10, RGB=get_color()),
+    Circle(window_width / 2 + 1, window_height / 2 + 1, 20e10, RGB=get_color()),
     Circle(751, 50, 40e10, RGB=get_color()),
     Circle(205, 100, 40e10, 0, RGB=get_color()),
 ]
 
 divider = 50
-fun_mass = (critical_mass) / ((window_width / divider) * (window_hight / divider))
+fun_mass = (critical_mass) / ((window_width / divider) * (window_height / divider))
 
 def new_balls():
     for x in range(window_width // divider):
-        for y in range(window_hight // divider):
+        for y in range(window_height // divider):
             circle.append(
                 Circle(
                     (x * divider) + (divider / 2),
@@ -124,7 +124,7 @@ def ball_in_circle(biggest):
             )
 
 pygame.init()
-gamedisplay = pygame.display.set_mode((window_width, window_hight))
+gamedisplay = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption("Vindu!")
 
 print(len(circle))
@@ -144,7 +144,7 @@ while not crashed:
             circle.append(
                 Circle(
                     random.randint(0, window_width),
-                    random.randint(0, window_hight),
+                    random.randint(0, window_height),
                     10e10,
                     RGB=get_color(),
                 )
@@ -153,7 +153,7 @@ while not crashed:
             circle.append(
                 Circle(
                     random.randint(0, window_width),
-                    random.randint(0, window_hight),
+                    random.randint(0, window_height),
                     10e10,
                     velocity_x=-0.15,
                     RGB=get_color(),
@@ -163,7 +163,7 @@ while not crashed:
             circle.append(
                 Circle(
                     random.randint(0, window_width),
-                    random.randint(0, window_hight),
+                    random.randint(0, window_height),
                     10e10,
                     velocity_x=0.15,
                     RGB=get_color(),
@@ -207,7 +207,7 @@ while not crashed:
         circle.append(
             Circle(
                 random.randint(0, window_width),
-                random.randint(0, window_hight),
+                random.randint(0, window_height),
                 10e10,
                 velocity_x=random.uniform(-0.25, 0.25),
                 RGB=get_color(),
@@ -217,7 +217,7 @@ while not crashed:
         circle.append(
             Circle(
                 random.randint(0, window_width),
-                random.randint(0, window_hight),
+                random.randint(0, window_height),
                 10e10,
                 RGB=get_color(),
             )
